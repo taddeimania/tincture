@@ -280,9 +280,9 @@ public:
         ModulePanel::refresh();
         const int col = ctx.proc.params.geti (ids().noise.colour);
         const bool colour = col > 0;
-        if (colour != shownColour)
+        if ((colour ? 1 : 0) != shownColour)
         {
-            shownColour = colour;
+            shownColour = colour ? 1 : 0;
             showAll (! colour, loopBtn, oneShotBtn, *start, *rand);
             showAll (colour, *stereo, *filter);
         }

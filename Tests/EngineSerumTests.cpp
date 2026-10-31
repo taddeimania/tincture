@@ -392,7 +392,7 @@ void testCorpus (const std::string& folder)
         std::string error;
         const bool ok = importPreset (b.data(), b.size(), p, v, {}, r, error);
         CHECK (ok);
-        if (! ok) { std::printf ("  %s: %s\n", e.path().filename().c_str(), error.c_str()); continue; }
+        if (! ok) { std::printf ("  %s: %s\n", e.path().filename().string().c_str(), error.c_str()); continue; }
         ++n;
         bool finite = true;
         const double peak = renderPeak (p, v, finite);

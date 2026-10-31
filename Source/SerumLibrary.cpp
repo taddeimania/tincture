@@ -32,7 +32,7 @@ int clmFrameSize (const juce::File& f)
         if (std::memcmp (id, "clm ", 4) == 0)
         {
             juce::MemoryBlock mb;
-            in.readIntoMemoryBlock (mb, (ssize_t) juce::jmin<juce::int64> (size, 256));
+            in.readIntoMemoryBlock (mb, (int) juce::jmin<juce::int64> (size, 256));   // (no ssize_t on MSVC)
             return wtedit::parseClmChunk (mb.toString().toStdString());
         }
         if (! in.setPosition (in.getPosition() + size + (size & 1))) break;

@@ -42,15 +42,15 @@ target_include_directories(TinctureDSP PUBLIC Source)
 add_library(TinctureZstd STATIC ThirdParty/zstd/zstddeclib.c)
 set_target_properties(TinctureZstd PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_compile_definitions(TinctureZstd PRIVATE ZSTD_DISABLE_ASM=1)
-if(MSVC)
-    target_compile_options(TinctureZstd PRIVATE /w)
-else()
+# (No /w on MSVC: it only conflicts with the default warning level, and the
+# decoder compiles clean there.)
+if(NOT MSVC)
     target_compile_options(TinctureZstd PRIVATE -O2 -w)
 endif()
 target_link_libraries(TinctureDSP PUBLIC TinctureZstd)
 set_target_properties(TinctureDSP PROPERTIES POSITION_INDEPENDENT_CODE ON)
 if(MSVC)
-    target_compile_options(TinctureDSP PRIVATE /utf-8 /fp:fast)
+    target_compile_options(TinctureDSP PRIVATE /utf-8 /fp:fast /wd4324)
 else()
     # The engine is the hot path: optimise it even in Debug builds.
     target_compile_options(TinctureDSP PRIVATE -O3 -ffast-math -fno-finite-math-only)
@@ -120,7 +120,8 @@ if(TINCTURE_HAVE_PLUGIN)
     target_sources(Tincture PRIVATE ${TINCTURE_PLUGIN_SOURCES})
     target_include_directories(Tincture PRIVATE Source)
     if(MSVC)
-        target_compile_options(Tincture PRIVATE /utf-8)
+        # C4324: 'structure was padded due to alignment specifier' -- intended (alignas buffers).
+        target_compile_options(Tincture PRIVATE /utf-8 /wd4324)
     endif()
     target_compile_definitions(Tincture PUBLIC
         JUCE_WEB_BROWSER=0
@@ -155,7 +156,7 @@ if(TINCTURE_BUILD_TOOLS)
         target_include_directories(TinctureSnapshot PRIVATE Tools)
         target_include_directories(TinctureSnapshot PRIVATE Source)
         if(MSVC)
-            target_compile_options(TinctureSnapshot PRIVATE /utf-8)
+            target_compile_options(TinctureSnapshot PRIVATE /utf-8 /wd4324)
         endif()
         target_compile_definitions(TinctureSnapshot PRIVATE
             JucePlugin_Name="Tincture"

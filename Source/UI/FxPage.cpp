@@ -15,7 +15,8 @@ namespace
 // Factory rack presets (Factory > category > name). Values are plain units
 // (dB, Hz, %, ms as the slot shows them); slot -1 = the unit's MIX (0..1).
 // ---------------------------------------------------------------------------
-struct FactoryModule { FxType type; std::vector<std::pair<int, float>> plain; int band = -1; };   // band: into the last splitter
+struct SlotValue { int slot; float value; };                 // slot -1 = MIX
+struct FactoryModule { FxType type; std::vector<SlotValue> plain; int band = -1; };   // band: into the last splitter
 struct FactoryRack { const char* category; const char* name; std::vector<FactoryModule> modules; };
 
 const std::vector<FactoryRack>& factoryRacks()
