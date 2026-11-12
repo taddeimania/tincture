@@ -1,5 +1,7 @@
 Tincture is a wavetable synthesizer VST3 for Ableton Live.
 
+New in 0.1.1: the macOS build is signed and notarised by Apple.
+
 Unzip and copy `Tincture.vst3` to:
 
 - macOS: `~/Library/Audio/Plug-Ins/VST3/`
